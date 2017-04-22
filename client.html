@@ -1,0 +1,77 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Socket.IO chat</title>
+    <style>
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      body { font: 13px Helvetica, Arial; }
+      form { background: #000; padding: 3px; position: fixed; bottom: 0; width: 100%; }
+      form input { border: 0; padding: 10px; width: 90%; margin-right: .5%; }
+      form button { width: 9%; background: rgb(130, 224, 255); border: none; padding: 10px; }
+      #messages { list-style-type: none; margin: 0; padding: 0; }
+      #messages li { padding: 5px 10px; }
+      #messages li:nth-child(odd) { background: #eee; }
+    </style>
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="https://code.jquery.com/jquery-1.11.1.js"></script>
+  </head>
+  <body>
+    <ul id="messages"></ul>
+    <form action="">
+      <input id="m" autocomplete="off" /><button>Send</button>
+    </form>
+
+  <script>
+
+    let user = 'guest';
+    let roomId = 'room1';
+
+    const appendMsg = (user, msg) => {
+      $('#messages').append($('<li>').text(`${user}: ${msg}`));
+    };
+
+    const clearBox = () => {
+      $('#m').val('');
+    };
+
+    const userJoin = (user) => {
+      $('#messages').append($('<li><b>').text(`${user} joined to the room!!`));
+    };
+
+    $(() => {
+      $('#m').focus();
+
+      let socket = io().connect({
+        reconnectionAttempts:3,
+        forceNew:true
+      });
+      
+      socket.on('connect', () => {
+        socket.emit('update_info', {username: user});
+        socket.emit('join', roomId);
+        console.log('connected');
+      });
+
+      socket.on('chat', (object) => {
+        appendMsg(object.username, object.msg);
+        console.log(object);
+      });
+      
+      socket.on('user_join', (data) => {
+        userJoin(data.username);
+        console.log(data);
+      });
+
+      $('form').submit(() => {
+        let msg = $('#m').val();
+        socket.emit('chat', {msg: msg});
+        appendMsg(user, msg);
+        clearBox();
+        return false;
+      });
+    });
+  </script>
+
+  </body>
+</html>
