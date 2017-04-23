@@ -1,0 +1,67 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Socket.IO chat</title>
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="https://code.jquery.com/jquery-1.11.1.js"></script>
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+    <!-- Optional theme -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+    <style>
+      body {
+        background-color: cadetblue;
+      }
+      #container {
+        background-color: white;
+        width: 40%;
+        height: 200px;
+        margin-top: 10px;
+        border-radius: 10px;
+      }
+      #entry {
+        padding-top: 20px;
+        padding-bottom: 20px;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="container" class="container">
+      <div id="entry">
+        <form action="get">
+          <div class="form-group">
+            <label for="inputName">Name</label>
+            <input type="text" class="form-control" id="inputName" placeholder="Input your name">
+            <label for="inputRoom">Room</label>
+            <input type="text" class="form-control" id="inputRoom" placeholder="Name of room" value="Public">
+          </div>
+          <input id="btn-go" class="btn btn-danger btn-block" disabled="disabled" type="button" value="Go">
+        </form>
+      </div>
+    </div>
+    <script>
+      const infoReady = () => {
+        if ($('#inputName').val() != '' && $('#inputRoom').val() != '') {
+            $('#btn-go').removeAttr('disabled');
+          } else {
+            $('#btn-go').attr('disabled', 'disabled');
+          }
+      };
+
+      $(() => {
+        $('#inputName').keyup((event) => {
+          infoReady();
+        });
+
+        $('#inputRoom').keyup((event) => {
+          infoReady();
+        });
+      });
+    </script>
+  </body>
+</html>
