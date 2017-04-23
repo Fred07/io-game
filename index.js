@@ -6,6 +6,10 @@ const http = require('http').Server(app);
 const io = require('socket.io')(http);
 
 app.get('/', (req, res) => {
+  res.sendFile(__dirname + '/home.html');
+});
+
+app.get('/chat', (req, res) => {
   res.sendFile(__dirname + '/client.html');
 });
 
@@ -17,6 +21,7 @@ io.on('connection', (socket) => {
     roomId: '',
   };
 
+  /** Event update_info */
   socket.on('update_info', (userData) => {
     socket.userData.username = userData.username;
     console.log(`${socket.userData.username} update info`);

@@ -4,13 +4,16 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "node index.js",
+    "start": "pm2 start index.js",
+    "stop": "pm2 stop all",
+    "restart": "pm2 restart all",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
     "express": "^4.15.2",
+    "pm2": "^2.4.5",
     "socket.io": "^1.7.3"
   }
 }
